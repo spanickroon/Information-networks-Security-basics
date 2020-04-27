@@ -2,6 +2,8 @@ import socket
 from threading import Thread
 
 import const_tcp
+import const_kerberos
+from des import Des
 
 
 class TCPServer:
@@ -12,18 +14,31 @@ class TCPServer:
 
     def listening_client(self, connection, address):
         print(f'Connection address: {address}')
+        key_1 = connection.recv(const_tcp.BUFFER_SIZE).decode("UTF-8")
 
-        while True:
-            data = connection.recv(const_tcp.BUFFER_SIZE)
-            if not data:
-                break
-            print(f'\nSender: {address}\nMessage: {data.decode("UTF-8")}')
+        print(f'\nSender: {address}\nKey: {key_1}')
+
+        key_2 = connection.recv(const_tcp.BUFFER_SIZE).decode("UTF-8")
+        print(f'\nSender: {address}\nKey: {key_2}')
+
+        if self.authentication(key_2):
+            connection.send('Access!'.encode('UTF-8'))
+            while True:
+                data = connection.recv(const_tcp.BUFFER_SIZE)
+                if not data:
+                    break
+                print(f'\nSender: {address}\nMessage: {data.decode("UTF-8")}')
+        else:
+            connection.send('No access!'.encode('UTF-8'))
+
         connection.close()
-
         print(f'Stop connection: {address}')
 
-    def authentication(self, key):
-        pass
+    def authentication(self, key_2):
+        return Des.encrypt(
+            int(key_2),
+            int(const_kerberos.KC_TGS.encode('UTF-8').hex(), 16),
+            decrypt=True) == int('COVID19'.encode('UTF-8').hex(), 16)
 
     def new_connection(self):
         while True:

@@ -1,9 +1,14 @@
+import logging
+
 from const_des import BLOCK_SIZE, KEY_SIZE, IP, IP_INV, PC1, PC2, E, S_BOXES, P
+from logging_setup import AppLogging
 
 
 class Des:
     @staticmethod
     def encrypt(msg, key, decrypt=False):
+        result = []
+        result.append(f'\nMessage: {key} Key: {key}')
         key = Des.permutation_by_table(key, BLOCK_SIZE, PC1)
 
         C0 = key >> 28
@@ -19,8 +24,10 @@ class Des:
         for i in range(1, 17):
             if decrypt:
                 i = 17-i
+            key = Des.round_function(R_last, round_keys[i])
+            result.append(f'\nStep: {i} --> {L_last} {R_last} Key: {key}')
             L_round = R_last
-            R_round = L_last ^ Des.round_function(R_last, round_keys[i])
+            R_round = L_last ^ key
             L_last = L_round
             R_last = R_round
 
@@ -29,6 +36,11 @@ class Des:
             cipher_block,
             BLOCK_SIZE,
             IP_INV)
+
+        result.append(f'\nResult: {cipher_block}\n')
+
+        AppLogging.setup_logs()
+        logging.info(''.join(result))
 
         return cipher_block
 

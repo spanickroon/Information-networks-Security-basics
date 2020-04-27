@@ -38,6 +38,10 @@ class Client:
         print(f'Get key from kerberos server: {key_4}\n')
 
         self.sock.send(key_4.encode('UTF-8'))
+        self.sock.send(str(self.step_5_generate_key()).encode('UTF-8'))
+
+        data = self.sock.recv(const_tcp.BUFFER_SIZE)
+        print(data.decode('UTF-8'))
 
     def start(self):
         send_thread = Thread(target=self.senging)
@@ -54,6 +58,11 @@ class Client:
         return Des.encrypt(
             int(key_tgs),
             int(const_kerberos.AUT.encode('UTF-8').hex(), 16))
+
+    def step_5_generate_key(self):
+        return Des.encrypt(
+            int(const_kerberos.KC.encode('UTF-8').hex(), 16),
+            int(const_kerberos.KC_TGS.encode('UTF-8').hex(), 16))
 
 
 if __name__ == '__main__':
