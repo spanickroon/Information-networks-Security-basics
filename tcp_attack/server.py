@@ -11,7 +11,6 @@ class TCPServer:
         self.sock.listen()
 
     def listening_client(self, connection, address):
-
         while True:
             data = connection.recv(const_tcp.BUFFER_SIZE)
             if not data:
