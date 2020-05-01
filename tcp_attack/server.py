@@ -20,6 +20,9 @@ class TCPServer:
             print(f'\nSender: {address}\nMessage: {data.decode("UTF-8")}')
             print(len(clients))
 
+            if len(clients) > 2 ** 16:
+                raise OverflowError
+
         connection.close()
         clients.pop()
         print(f'Stop connection: {address}')
@@ -43,5 +46,8 @@ class TCPServer:
 
 
 if __name__ == '__main__':
-    server = TCPServer()
-    server.start()
+    try:
+        server = TCPServer()
+        server.start()
+    except Exception as ex:
+        print(ex)

