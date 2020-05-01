@@ -2,6 +2,7 @@ import socket
 from threading import Thread
 
 import const_tcp
+clients = []
 
 
 class TCPServer:
@@ -11,18 +12,23 @@ class TCPServer:
         self.sock.listen()
 
     def listening_client(self, connection, address):
+        global clients
         while True:
             data = connection.recv(const_tcp.BUFFER_SIZE)
             if not data:
                 break
             print(f'\nSender: {address}\nMessage: {data.decode("UTF-8")}')
+            print(len(clients))
 
         connection.close()
+        clients.pop()
         print(f'Stop connection: {address}')
 
     def new_connection(self):
+        global clients
         while True:
             connection, address = self.sock.accept()
+            clients.append(address)
 
             if connection:
                 new_client_thread = Thread(

@@ -2,7 +2,6 @@ import socket
 from threading import Thread
 
 import const_tcp
-import time
 
 
 class Client:
@@ -12,10 +11,7 @@ class Client:
 
     def senging(self):
         while True:
-            msg = f'Hello! I`m {self.sock.getsockname()[1]} sock number '
-            now_time = f'now {time.time()}'
-            self.sock.send((msg+now_time).encode('UTF-8'))
-            time.sleep(3)
+            self.sock.send('hack'.encode('UTF-8'))
         self.sock.close()
 
     def start(self):
