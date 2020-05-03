@@ -1,0 +1,137 @@
+ScreenManagement:
+    ProductKeyScreen:
+    LoginScreen:
+    AppScreen:
+    UserManagementScreen:
+
+<ProductKeyScreen>:
+    name: 'product_key_screen'
+
+    text_input_product_key: text_input_product_key
+    button_product_key: button_product_key
+
+    BoxLayout:
+        orientation: 'vertical'
+        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+        size_hint: 0.5, 0.22
+        spacing: 40
+
+        TextInput:
+            id: text_input_product_key
+            pos_hint: {'center_x': 0.5}
+            multiline: False
+            password: True
+            hint_text: 'Enter product key'
+            font_size: 20
+        Button:
+            id: button_product_key
+            pos_hint: {'center_x': 0.5}
+            size_hint: 0.5, 1
+            text: 'Enter key'
+            on_release:
+                app.root.current = 'login_screen'
+
+<LoginScreen>:
+    name: 'login_screen'
+
+    text_input_login: text_input_login
+    text_input_password: text_input_password
+    button_login: button_login
+    button_register: button_register
+
+    BoxLayout:
+        orientation: 'vertical'
+        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+        size_hint: 0.5, 0.5
+        spacing: 10
+
+        Label:
+            text: 'Login or Register'
+            pos_hint: {'center_x': 0.2}
+            font_size: 20
+
+        TextInput:
+            id: text_input_login
+            hint_text: 'Login'
+            size_hint: 1, 0.7
+            multiline: False
+            font_size: 20
+
+        TextInput:
+            id: text_input_password
+            size_hint: 1, 0.7
+            hint_text: 'Password'
+            multiline: False
+            password: True
+            font_size: 20
+
+        Button:
+            id: button_login
+            pos_hint: {'center_x': 0.5}
+            size_hint: 0.5, 0.8
+            text: 'Login'
+            on_release: app.root.current = 'app_screen'
+
+        Button:
+            id: button_register
+            pos_hint: {'center_x': 0.5}
+            size_hint: 0.5, 0.8
+            text: 'Register'
+
+
+<AppScreen>:
+    name: 'app_screen'
+
+    button_syn_flood: button_syn_flood
+    button_user_management: button_user_management
+    button_exit_app: button_exit_app
+
+    BoxLayout:
+        orientation: 'vertical'
+        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+        size_hint: 0.5, 0.5
+        spacing: 20
+
+        Button:
+            id: button_syn_flood
+            text: 'Say Hi'
+            on_release: print("start")
+
+        Button:
+            id: button_user_management
+            text: 'User management'
+            on_release: app.root.current = 'user_management_screen'
+
+        Button:
+            id: button_exit_app
+            text: 'Exit'
+            on_release: app.root.current = 'login_screen'
+
+
+<UserManagementScreen>:
+    name: 'user_management_screen'
+
+    spinner: spinner
+    button_back_app: button_back_app
+    button_delete_user: button_delete_user
+
+    BoxLayout:
+        orientation: 'vertical'
+        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+        size_hint: 0.3, 0.3
+        spacing: 20
+
+        Spinner:
+            id: spinner
+            pos_hint: {'center_x': 0.5}
+            sync_height: True
+
+        Button:
+            id: button_delete_user
+            text: 'Delete User'
+
+        Button:
+            id: button_back_app
+            text: 'Back'
+            pos_hint: {'center_x': 0.5}
+            on_release: app.root.current = 'app_screen'
