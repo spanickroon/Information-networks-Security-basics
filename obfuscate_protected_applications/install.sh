@@ -1,0 +1,1 @@
+cd .. && sudo chmod -R 0755 protected_applications/DEBIAN/ && dpkg-deb --build protected_applications/
