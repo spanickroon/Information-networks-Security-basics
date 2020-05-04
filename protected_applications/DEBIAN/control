@@ -1,0 +1,8 @@
+Package: myapp
+Version: 1.0
+Architecture: all
+Essential: no
+Priority: optional
+Depends:
+Maintainer: nikita koznev
+Description: myapp
