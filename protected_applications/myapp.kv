@@ -69,13 +69,14 @@ ScreenManagement:
             pos_hint: {'center_x': 0.5}
             size_hint: 0.5, 0.8
             text: 'Login'
-            on_release: app.root.current = 'app_screen'
+            on_release: app.root.current = 'app_screen' if root.login_user() else 'login_screen'
 
         Button:
             id: button_register
             pos_hint: {'center_x': 0.5}
             size_hint: 0.5, 0.8
             text: 'Register'
+            on_release: root.register_user()
 
 
 <AppScreen>:
