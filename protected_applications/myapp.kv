@@ -28,8 +28,7 @@ ScreenManagement:
             pos_hint: {'center_x': 0.5}
             size_hint: 0.5, 1
             text: 'Enter key'
-            on_release:
-                app.root.current = 'login_screen'
+            on_release: app.root.current = 'login_screen' if root.check_key() else 'product_key_screen'
 
 <LoginScreen>:
     name: 'login_screen'
