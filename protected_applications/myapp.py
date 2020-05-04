@@ -64,15 +64,22 @@ class LoginScreen(Screen):
 
         if len(text_login) in range(4, 21)\
                 and len(text_password) in range(4, 21):
-
             global collection
-            collection.insert_one(
-                {
-                    'user': text_login,
-                    'password_hash': hashlib.sha256(
-                        text_password.encode('UTF-8')).hexdigest(),
-                    'role': 'user'
-                })
+
+            if not collection.find_one({'user': text_login}):
+                collection.insert_one(
+                    {
+                        'user': text_login,
+                        'password_hash': hashlib.sha256(
+                            text_password.encode('UTF-8')).hexdigest(),
+                        'role': 'user'
+                    })
+            else:
+                popup = Popup(
+                    title='Error',
+                    content=Label(text=f'User {text_login} already exists'),
+                    size_hint=(0.4, 0.4))
+                popup.open()
         else:
             popup = Popup(
                 title='Error',
