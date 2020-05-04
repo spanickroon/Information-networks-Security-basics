@@ -82,7 +82,7 @@ ScreenManagement:
 <AppScreen>:
     name: 'app_screen'
 
-    button_syn_flood: button_syn_flood
+    button_say_hi: button_say_hi
     button_user_management: button_user_management
     button_exit_app: button_exit_app
 
@@ -93,14 +93,14 @@ ScreenManagement:
         spacing: 20
 
         Button:
-            id: button_syn_flood
+            id: button_say_hi
             text: 'Say Hi'
-            on_release: print("start")
+            on_release: root.say_hi()
 
         Button:
             id: button_user_management
             text: 'User management'
-            on_release: app.root.current = 'user_management_screen'
+            on_release: app.root.current = 'user_management_screen' if root.user_manage() else 'app_screen'
 
         Button:
             id: button_exit_app
@@ -117,8 +117,8 @@ ScreenManagement:
 
     BoxLayout:
         orientation: 'vertical'
-        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-        size_hint: 0.3, 0.3
+        pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+        size_hint: 0.3, 0.5
         spacing: 20
 
         Spinner:
@@ -127,8 +127,13 @@ ScreenManagement:
             sync_height: True
 
         Button:
+            text: 'Update List'
+            on_release: root.update()
+
+        Button:
             id: button_delete_user
             text: 'Delete User'
+            on_release: root.delete_user()
 
         Button:
             id: button_back_app

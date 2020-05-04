@@ -11,15 +11,23 @@ import constants as cnst
 
 Window.size = (700, 500)
 user_name = ''
+key_protected_count = 0
+values = []
 
 
 class ProductKeyScreen(Screen):
 
     def check_key(self):
+        global key_protected_count
         text = self.text_input_product_key.text
+
+        if key_protected_count > 3:
+            exit()
 
         if hashlib.sha256(text.encode('UTF-8')).hexdigest() == cnst.KEY:
             return True
+        else:
+            key_protected_count += 1
         return False
 
 
@@ -77,11 +85,53 @@ class LoginScreen(Screen):
 
 
 class AppScreen(Screen):
-    pass
+
+    def say_hi(self):
+        global user_name
+        popup = Popup(
+                title='Hello',
+                content=Label(text=f'Hi {user_name}'),
+                size_hint=(0.4, 0.4))
+        popup.open()
+
+    def user_manage(self):
+        global user_name
+        global collection
+        global values
+        values.clear()
+
+        if collection.find_one({'user': user_name}).get('role') == 'root':
+            for user in collection.find():
+                values.append(user['user'])
+            return True
+        else:
+            popup = Popup(
+                title='Hello',
+                content=Label(text='You do not have admin rights'),
+                size_hint=(0.4, 0.4))
+            popup.open()
+            return False
 
 
 class UserManagementScreen(Screen):
-    pass
+
+    def update(self):
+        global values
+        self.spinner.values = values
+        self.spinner.text = self.spinner.values[0]
+
+    def delete_user(self):
+        global collection
+        global values
+
+        values.clear()
+
+        collection.delete_one({'user': self.spinner.text})
+        for user in collection.find():
+            values.append(user['user'])
+
+        self.spinner.values = values
+        self.spinner.text = self.spinner.values[0]
 
 
 class ScreenManagement(ScreenManager):
